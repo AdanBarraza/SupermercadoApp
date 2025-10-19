@@ -158,6 +158,34 @@ UPDATE productos
             MessageBox.Show(ok ? "Producto eliminado" : "No se eliminó");
             if (ok) CargarProductos();
         }
+
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void proveedoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var f = new frmProveedores())
+            {
+                f.ShowDialog(this);
+            }
+        }
+
+        private void productoProveedoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string sql = @"
+SELECT p.id_producto,
+       p.nombre       AS producto,
+       pr.empresa     AS proveedor,
+       p.precio,
+       p.stock
+  FROM productos p
+  JOIN proveedores pr
+    ON p.id_proveedor = pr.id_proveedor
+ ORDER BY pr.empresa, p.nombre;";
+            dgvProductos.DataSource = data.GetDataTable(sql);
+        }
     }
 }
     
